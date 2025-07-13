@@ -11,7 +11,18 @@ const dummyUser = {
   email: "1234abcd@gmail.com",
 };
 
-app.get("/me", (req, res) => {
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+
+  if (!token) {
+    return res.status(400).json({ error: "Invalid authorization code" });
+  }
+
+  next();
+};
+
+app.get("/me", authenticateToken, (req, res) => {
   res.send(dummyUser);
 });
 
