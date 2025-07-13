@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -11,11 +12,6 @@ app.use(
 );
 
 const PORT = 5001;
-const dummyUser = {
-  id: "1",
-  name: "Taro",
-  email: "1234abcd@gmail.com",
-};
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -25,11 +21,17 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: "Token missing or invalid" });
   }
 
-  next();
+  jwt.verify(token, "secretkey", (err, user) => {
+    if (err) return res.status(403).json({ error: "Invalid or expired token" });
+
+    req.user = user;
+    next();
+  });
 };
 
 app.get("/me", authenticateToken, (req, res) => {
-  res.send(dummyUser);
+  const user = req.user;
+  return res.status(200).json({ message: "User Profile", user });
 });
 
 app.listen(PORT, () => {
