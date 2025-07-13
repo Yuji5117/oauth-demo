@@ -7,12 +7,17 @@ export default function CallbackPage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleClickGetMe = () => {
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     fetch("http://localhost:5001/me", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+      headers: headers,
     }).then((response) =>
       response
         .json()
