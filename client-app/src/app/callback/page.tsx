@@ -6,6 +6,21 @@ export default function CallbackPage() {
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const handleClickGetMe = () => {
+    fetch("http://localhost:5001/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) =>
+      response
+        .json()
+        .then((data) => console.log(data))
+        .catch((err) => console.error("Error:", error))
+    );
+  };
+
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const code = query.get("code");
@@ -49,6 +64,7 @@ export default function CallbackPage() {
         </p>
       )}
       {error && <p>❌ Error: {error}</p>}
+      <button onClick={handleClickGetMe}>Get Me</button>
     </div>
   );
 }
