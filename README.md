@@ -6,11 +6,13 @@
 
 ## 📁 ディレクトリ構成
 
+```
 oauth-demo/
 ├── auth-server/ # 認可サーバー（Express）
 ├── client-app/ # クライアントアプリ（Next.js）
 ├── resource-server/ # リソースサーバー（Express）
 └── README.md # プロジェクト全体の概要
+```
 
 ## 🚀 起動手順
 
