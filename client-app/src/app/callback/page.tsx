@@ -2,9 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+type User = {
+  id: string;
+  name: string;
+  iat: number;
+  exp: number;
+};
+
 export default function CallbackPage() {
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const handleFetchUser = () => {
     const headers: HeadersInit = {
@@ -21,8 +29,10 @@ export default function CallbackPage() {
     }).then((response) =>
       response
         .json()
-        .then((data) => console.log(data))
-        .catch((err) => console.error("Error:", error))
+        .then((data) => setUser(data.user))
+        .catch((err) => {
+          console.error("Error:", err), setError("Failed to fetch user data");
+        })
     );
   };
 
@@ -70,6 +80,20 @@ export default function CallbackPage() {
       )}
       {error && <p>❌ Error: {error}</p>}
       <button onClick={handleFetchUser}>Get Me</button>
+      <div>
+        {user ? (
+          <div>
+            <p>
+              <strong>ID:</strong> {user.id}
+            </p>
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+          </div>
+        ) : (
+          <p>No user info</p>
+        )}
+      </div>
     </div>
   );
 }
