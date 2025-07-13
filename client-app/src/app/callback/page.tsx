@@ -6,7 +6,7 @@ export default function CallbackPage() {
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleClickGetMe = () => {
+  const handleFetchUser = () => {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
     };
@@ -69,7 +69,7 @@ export default function CallbackPage() {
         </p>
       )}
       {error && <p>❌ Error: {error}</p>}
-      <button onClick={handleClickGetMe}>Get Me</button>
+      <button onClick={handleFetchUser}>Get Me</button>
     </div>
   );
 }
